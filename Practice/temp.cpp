@@ -2,46 +2,58 @@
 // Created by bw on 15. 10. 25.
 //
 
+/*************************************************************************
+* *Problem Palindrome
+* 국민대학교 전자정보통신대학 컴퓨터공학부 3 학년 *
+* 20113310 이 웅 *
+* *
+*************************************************************************/
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <string.h>
 
 using namespace std;
+char strSol[10000] = "";
+int cnt = 0;
 
-int T, N;
-int A[501], S[501], D[501][501];
-
-int dy(int s, int e)
-{
-    if (s >= e)
-        return 0;
-    if (s + 1 == e)
-        return A[s] + A[e];
-
-    int &ret = D[s][e];
-
-    if (ret < 2e9)
-        return ret;
-
-    for (int k = s; k < e; k++)
-        ret = min(ret, dy(s, k) + dy(k + 1, e) + S[e] - S[s - 1]);
-
-    return ret;
+void con(int n, int base) {
+    string str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@?";
+    if (n >= base)
+        con(n / base, base);
+    strSol[cnt++] = str[n % base];
 }
 
-int main()
-{
-    freopen("input.txt", "r", stdin);
+bool pal(int start, int end) {
+    if (start > end)
+        return true;
+    else if (strSol[start] == strSol[end])
+        return pal(++start, --end);
+    else if (strSol[start] != strSol[end])
+        return false;
+}
 
-    for (scanf("%d", &T); T--;) {
-        scanf("%d", &N);
-        for (int i = 1; i <= N; i++) {
-            scanf("%d", A + i);
-            S[i] = S[i - 1] + A[i];
+int main(void) {
+    ifstream in;
+    in.open("input.txt");
+    int testcases;
+    in >> testcases;
+    int value;
+    for (int i = 0; i < testcases; i++) {
+        in >> value;
+        for (int j = 2; j <= 64; j++) {
+            con(value, j);
+            cout << strSol << endl;
+            if (pal(0, cnt - 1)) {
+                cout << 1 << endl;
+                break;
+            }
+            else if (j == 64) {
+                cout << 0 << endl;
+                break;
+            }
+            memset(strSol, 0, sizeof(char) * 10000);
+            cnt = 0;
         }
-        for (int i = 1; i <= N; i++) {
-            for (int j = i; j <= N; j++)
-                D[i][j] = (int) 2e9;
-        }
-
-        printf("%d\n", dy(1, N));
     }
 }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
-project(Practice)
+project(CardGame)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES temp.cpp)
-add_executable(Practice ${SOURCE_FILES})
+set(SOURCE_FILES main.cpp)
+add_executable(CardGame ${SOURCE_FILES})
