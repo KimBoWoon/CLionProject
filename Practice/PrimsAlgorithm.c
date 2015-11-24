@@ -13,9 +13,9 @@ typedef struct edge {
     int weight;
 } Edge;
 
-Edge addEdge(int s, int e, int w);
+void prims(int arr[][SIZE], Edge selectEdge[SIZE]);
 
-void prims(int arr[][SIZE]);
+void edgePrint(Edge selectEdge[SIZE]);
 
 int main() {
     int arr[SIZE][SIZE] = {
@@ -26,40 +26,27 @@ int main() {
             0, INF, 6, 4, 0, 5,
             0, INF, INF, 2, 5, 0
     };
+    Edge selectEdge[SIZE] = {0, 0, 0};
 
-    prims(arr);
+    prims(arr, selectEdge);
+    edgePrint(selectEdge);
 
     return 0;
 }
 
-Edge addEdge(int s, int e, int w) {
-    Edge edge = {s, e, w};
-
-    return edge;
-}
-
-void prims(int arr[][SIZE]) {
+void prims(int arr[][SIZE], Edge selectEdge[SIZE]) {
     int nearest[SIZE];
     int distance[SIZE];
-    int set[SIZE] = {0, 1};
-    Edge e[SIZE] = {0, 0, 0};
-    int i;
+    int i, selectVertexCnt = 0;
 
     for (i = 2; i <= SIZE; i++) {
         nearest[i] = 1;
         distance[i] = arr[1][i];
     }
 
-    while (1) {
+    while (selectVertexCnt < SIZE) {
         int min = INF;
         int vnear = 0;
-
-        for (i = 1; i < SIZE; i++) {
-            if (set[i] == 0)
-                break;
-        }
-        if (i == SIZE)
-            break;
 
         for (i = 2; i < SIZE; i++) {
             if (distance[i] >= 0 && distance[i] < min) {
@@ -68,8 +55,10 @@ void prims(int arr[][SIZE]) {
             }
         }
 
-        e[vnear] = addEdge(nearest[vnear], vnear, distance[vnear]);
-        set[vnear] = 1;
+        selectEdge[vnear].start = nearest[vnear];
+        selectEdge[vnear].end = vnear;
+        selectEdge[vnear].weight = distance[vnear];
+        selectVertexCnt++;
         distance[vnear] *= -1;
         for (i = 2; i < SIZE; i++) {
             if (arr[i][vnear] < distance[i]) {
@@ -78,9 +67,13 @@ void prims(int arr[][SIZE]) {
             }
         }
     }
+}
+
+void edgePrint(Edge selectEdge[SIZE]) {
+    int i;
 
     printf("Minimum Spanning Trees\n");
     printf("Prim's Algorithm\n");
     for (i = 1; i < SIZE; i++)
-        printf("Start : %d End : %d Weight : %d\n", e[i].start, e[i].end, e[i].weight);
+        printf("Start : %d End : %d Weight : %d\n", selectEdge[i].start, selectEdge[i].end, selectEdge[i].weight);
 }
