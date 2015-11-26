@@ -3,5 +3,5 @@ project(Practice)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES DijkstrasAlgorithm.c)
+set(SOURCE_FILES BellmanFordAlgorithm.c)
 add_executable(Practice ${SOURCE_FILES})
