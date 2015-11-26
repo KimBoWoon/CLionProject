@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <cstdio>
-#include <limits.h>
+#include <climits>
 #include <string.h>
 #include <cmath>
 
@@ -17,7 +19,7 @@ int main() {
 
     for (int i = 0; i < testCase; i++) {
         int size = 0;
-        LLONG d = ULONG_LONG_MAX, cnt = 2;
+        LLONG d = ULLONG_MAX, cnt = 2;
         scanf("%d", &size);
 
         memset(arr, 0, sizeof(LLONG) * 100005);

@@ -1,6 +1,7 @@
 //
 // Created by bw on 15. 11. 14.
 //
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <cstdio>
 #include <string>
