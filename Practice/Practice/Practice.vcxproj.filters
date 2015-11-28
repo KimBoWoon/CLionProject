@@ -15,14 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DijkstrasAlgorithm.c">
+    <ClCompile Include="SudokuDancingLinks.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KruskalsAlgorithm.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PrimsAlgorithm.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
   </ItemGroup>
 </Project>

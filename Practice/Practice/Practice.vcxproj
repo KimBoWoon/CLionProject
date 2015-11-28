@@ -11,9 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DijkstrasAlgorithm.c" />
-    <ClCompile Include="KruskalsAlgorithm.c" />
-    <ClCompile Include="PrimsAlgorithm.c" />
+    <Text Include="input.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SudokuDancingLinks.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3F0ABB8-54DF-4824-B90B-17AC695523DE}</ProjectGuid>
