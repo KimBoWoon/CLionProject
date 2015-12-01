@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SudokuDancingLinks.cpp">
+    <ClCompile Include="CrossWordChecker.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.txt">
+    <Text Include="checker.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="userinput.txt">
       <Filter>리소스 파일</Filter>
     </Text>
   </ItemGroup>
