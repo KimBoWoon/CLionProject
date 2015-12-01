@@ -1,4 +1,4 @@
-//
+ï»¿//
 // Created by bw on 15. 11. 27.
 //
 
@@ -16,14 +16,14 @@ using namespace std;
 
 #define MAX_SIZE 50
 
-// ÇØ½¬ Ã¼ÀÎ¿¡ ÇÊ¿äÇÑ ³ëµå
+// í•´ì‰¬ ì²´ì¸ì— í•„ìš”í•œ ë…¸ë“œ
 class Node {
 private:
     string s;
     Node *nextNode;
 public:
     Node(string s = "", Node *nextNode = NULL) : s(s) { }
-	// Ãæµ¹ÀÌ »ı±æ °æ¿ì ÇØ½¬ Ã¼ÀÎ »ı¼º
+	// ì¶©ëŒì´ ìƒê¸¸ ê²½ìš° í•´ì‰¬ ì²´ì¸ ìƒì„±
     void setNextNode(Node *node) {
         if (nextNode == NULL)
             nextNode = node;
@@ -35,15 +35,15 @@ public:
             n->nextNode = node;
         }
     }
-	// ´ÙÀ½ ³ëµå¸¦ °¡Á®¿È
+	// ë‹¤ìŒ ë…¸ë“œë¥¼ ê°€ì ¸ì˜´
     Node *getNode() {
         return nextNode;
     }
-	// ÇöÀç ³ëµåÀÇ µ¥ÀÌÅÍ¸¦ °¡Á®¿È
+	// í˜„ì¬ ë…¸ë“œì˜ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜´
     string getData() {
         return s;
     }
-	// ÇöÀç ÇØ½¬ Ã¼ÀÎÀÇ ¸ğµç µ¥ÀÌÅÍ¸¦ Ãâ·ÂÇÔ
+	// í˜„ì¬ í•´ì‰¬ ì²´ì¸ì˜ ëª¨ë“  ë°ì´í„°ë¥¼ ì¶œë ¥í•¨
     void printData() {
         Node *cur = nextNode;
         while (cur != NULL) {
@@ -53,25 +53,25 @@ public:
         cout << endl;
     }
 };
-// inputÆÄÀÏ°ú user´ä¾È ÆÄÀÏÀ» ÀĞ¾î¿À´Â ÇÔ¼ö
+// inputíŒŒì¼ê³¼ userë‹µì•ˆ íŒŒì¼ì„ ì½ì–´ì˜¤ëŠ” í•¨ìˆ˜
 void dataInput(int row, int col);
-// °¡·Î ´Ü¾î »Ì¾Æ³»±â
+// ê°€ë¡œ ë‹¨ì–´ ë½‘ì•„ë‚´ê¸°
 void acrossWord(int across, int col);
-// ¼¼·Î ´Ü¾î »Ì¾Æ³»±â
+// ì„¸ë¡œ ë‹¨ì–´ ë½‘ì•„ë‚´ê¸°
 void downWord(int down, int row);
-// ´Ü¾î ¸ÅÄª È®ÀÎ
+// ë‹¨ì–´ ë§¤ì¹­ í™•ì¸
 bool matchingWord(string word, string inputWord);
 
-char userAnswer[MAX_SIZE][MAX_SIZE];// user ´ä¾È
-char inputData[MAX_SIZE][MAX_SIZE];// input µ¥ÀÌÅÍ
-// »çÀü
+char userAnswer[MAX_SIZE][MAX_SIZE];// user ë‹µì•ˆ
+char inputData[MAX_SIZE][MAX_SIZE];// input ë°ì´í„°
+// ì‚¬ì „
 vector<string> dictionary = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
                              "S", "T", "U", "V", "W", "X", "Y", "Z", "RIBS", "RULE", "DRUG", "SERUM", "INDECT",
                              "HOSPITAL", "SURGEON", "ANTIBIOTIC", "SCROLL", "STITCH", "NURSE", "AIDS"};
-// ÇØ½¬ Ã¼ÀÎ¿¡ ÇÊ¿äÇÑ vector
+// í•´ì‰¬ ì²´ì¸ì— í•„ìš”í•œ vector
 vector<Node *> vec(26);
-// ÀÔ·Â ÆÄÀÏµé
-// ¸Å°³º¯¼ö·Î ³Ñ°ÜÁÖ±â ±ÍÂúÀ½
+// ì…ë ¥ íŒŒì¼ë“¤
+// ë§¤ê°œë³€ìˆ˜ë¡œ ë„˜ê²¨ì£¼ê¸° ê·€ì°®ìŒ
 ifstream input("checker.txt");
 ifstream answer("userinput.txt");
 
@@ -88,11 +88,11 @@ int main() {
 		memset(userAnswer, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
 		memset(inputData, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
 		
-		// ÇØ½¬ Ã¼ÀÎ ÃÊ±âÈ­
+		// í•´ì‰¬ ì²´ì¸ ì´ˆê¸°í™”
         for (int i = 0; i < 26; i++)
             vec[i] = new Node;
 
-		// »çÀüÀ» ÇØ½¬
+		// ì‚¬ì „ì„ í•´ì‰¬
         for (size_t i = 0; i < dictionary.size(); i++) {
             int ascii = dictionary[i][0] - 65;
             Node *node = new Node(dictionary[i]);
@@ -100,7 +100,7 @@ int main() {
             vec[ascii]->setNextNode(node);
         }
 
-		// µğ¹ö±ë¿ë
+		// ë””ë²„ê¹…ìš©
         for (int i = 0; i < 26; i++) {
             vec[i]->printData();
         }
@@ -116,27 +116,27 @@ int main() {
 }
 
 void dataInput(int row, int col) {
-	// input ÆÄÀÏ µ¥ÀÌÅÍ
+	// input íŒŒì¼ ë°ì´í„°
 	for (int x = 0; x < row; x++) {
 		for (int y = 0; y < col; y++)
 			input >> inputData[x][y];
 	}
-	// user ´ä¾È µ¥ÀÌÅÍ
+	// user ë‹µì•ˆ ë°ì´í„°
 	for (int x = 0; x < row; x++) {
 		for (int y = 0; y < col; y++)
 			answer >> userAnswer[x][y];
 	}
 }
-// °¡·Î ´Ü¾î
+// ê°€ë¡œ ë‹¨ì–´
 void acrossWord(int across, int col) {
     for (int x = 0; x < across; x++) {
         int i, j;
         string str = "", temp = "";
 		input >> i >> j;
 
-		// user ´ä¾ÈÀÇ ´Ü¾î¸¦ »Ì¾Æ¿È
-		// input ÆÄÀÏÀÇ ´Ü¾îµµ »Ì¾Æ¿È
-		// ´Ü¾î°¡ Á¦´ë·Î ¸ÅÄªµÇ´ÂÁö È®ÀÎÇÏ±â À§ÇÔ
+		// user ë‹µì•ˆì˜ ë‹¨ì–´ë¥¼ ë½‘ì•„ì˜´
+		// input íŒŒì¼ì˜ ë‹¨ì–´ë„ ë½‘ì•„ì˜´
+		// ë‹¨ì–´ê°€ ì œëŒ€ë¡œ ë§¤ì¹­ë˜ëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•¨
         for (int index = 0; ; index++) {
             if (j - 1 + index < col) {
 				if (userAnswer[i - 1][j - 1 + index] != '*') {
@@ -149,7 +149,7 @@ void acrossWord(int across, int col) {
             else
                 break;
         }
-		// ¸ÅÄª TRUE ¸ÅÄª ¾ÈµÊ FALSE
+		// ë§¤ì¹­ TRUE ë§¤ì¹­ ì•ˆë¨ FALSE
         if (matchingWord(str, temp))
             cout << "TRUE" << endl;
         else
@@ -158,16 +158,16 @@ void acrossWord(int across, int col) {
         //cout << str << endl;
     }
 }
-// ¼¼·Î ´Ü¾î
+// ì„¸ë¡œ ë‹¨ì–´
 void downWord(int down, int row) {
     for (int x = 0; x < down; x++) {
         int i, j;
         string str = "", temp = "";
 		input >> i >> j;
 
-		// user ´ä¾ÈÀÇ ´Ü¾î¸¦ »Ì¾Æ¿È
-		// input ÆÄÀÏÀÇ ´Ü¾îµµ »Ì¾Æ¿È
-		// ´Ü¾î°¡ Á¦´ë·Î ¸ÅÄªµÇ´ÂÁö È®ÀÎÇÏ±â À§ÇÔ
+		// user ë‹µì•ˆì˜ ë‹¨ì–´ë¥¼ ë½‘ì•„ì˜´
+		// input íŒŒì¼ì˜ ë‹¨ì–´ë„ ë½‘ì•„ì˜´
+		// ë‹¨ì–´ê°€ ì œëŒ€ë¡œ ë§¤ì¹­ë˜ëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•¨
         for (int index = 0; ; index++) {
             if (i - 1 + index < row) {
 				if (userAnswer[i - 1 + index][j - 1] != '*') {
@@ -180,7 +180,7 @@ void downWord(int down, int row) {
             else
                 break;
         }
-		// ¸ÅÄª TRUE ¸ÅÄª ¾ÈµÊ FALSE
+		// ë§¤ì¹­ TRUE ë§¤ì¹­ ì•ˆë¨ FALSE
         if (matchingWord(str, temp))
             cout << "TRUE" << endl;
         else
@@ -189,22 +189,22 @@ void downWord(int down, int row) {
         //cout << str << endl;
     }
 }
-// ´Ü¾î ¸ÅÄª È®ÀÎ
+// ë‹¨ì–´ ë§¤ì¹­ í™•ì¸
 bool matchingWord(string word, string inputWord) {
 	size_t index = 0;
     Node *cur = vec[word[0] - 65]->getNode();
 	string s;
 
     while (cur != NULL) {
-		// ±ÛÀÚ ¼ö ¸ÂÃçÁÜ
+		// ê¸€ì ìˆ˜ ë§ì¶°ì¤Œ
 		while (cur->getData().size() != inputWord.size()) {
 			if (cur->getNode() == NULL)
 				return false;
 			cur = cur->getNode();
 		}
-		// s = »çÀü µ¥ÀÌÅÍ
+		// s = ì‚¬ì „ ë°ì´í„°
 		s = cur->getData();
-		// ÀÏ´Ü input°ú ºñ±³ÇØ¼­ ´Ü¾î¸¦ Á¦´ë·Î »ç¿ëÇß´ÂÁö È®ÀÎ
+		// ì¼ë‹¨ inputê³¼ ë¹„êµí•´ì„œ ë‹¨ì–´ë¥¼ ì œëŒ€ë¡œ ì‚¬ìš©í–ˆëŠ”ì§€ í™•ì¸
         for (index = 0; index < word.size(); index++) {
 			if (inputWord[index] == '_')
                 continue;
@@ -212,8 +212,8 @@ bool matchingWord(string word, string inputWord) {
                 break;
             }
         }
-        // ´Ü¾î¸¦ Á¦´ë·Î »ç¿ëÇßÀ¸¸é user°¡ ÀÔ·ÂÇÑ °ª°ú »çÀü µ¥ÀÌÅÍ¸¦ ºñ±³
-		// µÑ´Ù ¸ÂÀ¸¸é true ¹İÈ¯ ¾Æ´Ï¸é ·ÎÁ÷À» ¹İº¹
+        // ë‹¨ì–´ë¥¼ ì œëŒ€ë¡œ ì‚¬ìš©í–ˆìœ¼ë©´ userê°€ ì…ë ¥í•œ ê°’ê³¼ ì‚¬ì „ ë°ì´í„°ë¥¼ ë¹„êµ
+		// ë‘˜ë‹¤ ë§ìœ¼ë©´ true ë°˜í™˜ ì•„ë‹ˆë©´ ë¡œì§ì„ ë°˜ë³µ
 		if (word.compare(s) == 0 && index == word.size())
 			return true;
 
