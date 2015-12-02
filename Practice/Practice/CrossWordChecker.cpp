@@ -26,7 +26,7 @@ public:
     }
 
     void printData() const {
-        for (int i = 0; i < s.size(); i++)
+        for (size_t i = 0; i < s.size(); i++)
             cout << s[i] << " ";
         cout << endl;
     }
@@ -180,7 +180,7 @@ void downWord(int down, int row) {
 // 단어 매칭 확인
 bool matchingWord(string word, string inputWord) {
     vector<string> arr = vec[word[0] - 65]->getWordVector();
-    size_t start = 0, end = arr.size();
+    size_t start = 0, end = arr.size() - 1;
 
     // 단어가 제대로 사용됐는지 확인
     for (size_t index = 0; index < word.size(); index++) {
