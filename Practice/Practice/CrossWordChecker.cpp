@@ -16,60 +16,49 @@ using namespace std;
 
 #define MAX_SIZE 50
 
-// 해쉬 체인에 필요한 노드
-class Node {
+// 특정 단어장
+class Word {
 private:
-    string s;
-    Node *nextNode;
+    vector<string> s;
 public:
-    Node(string s = "", Node *nextNode = NULL) : s(s) { }
-	// 충돌이 생길 경우 해쉬 체인 생성
-    void setNextNode(Node *node) {
-        if (nextNode == NULL)
-            nextNode = node;
-        else {
-            Node *n = nextNode;
-            while (n->nextNode != NULL) {
-                n = n->nextNode;
-            }
-            n->nextNode = node;
-        }
+    void addWord(string s) {
+        this->s.push_back(s);
     }
-	// 다음 노드를 가져옴
-    Node *getNode() {
-        return nextNode;
-    }
-	// 현재 노드의 데이터를 가져옴
-    string getData() {
-        return s;
-    }
-	// 현재 해쉬 체인의 모든 데이터를 출력함
-    void printData() {
-        Node *cur = nextNode;
-        while (cur != NULL) {
-            cout << cur->s << " ";
-            cur = cur->nextNode;
-        }
+
+    void printData() const {
+        for (int i = 0; i < s.size(); i++)
+            cout << s[i] << " ";
         cout << endl;
     }
+
+    vector<string> getWordVector() {
+        return s;
+    }
 };
+
 // input파일과 user답안 파일을 읽어오는 함수
 void dataInput(int row, int col);
+
 // 가로 단어 뽑아내기
 void acrossWord(int across, int col);
+
 // 세로 단어 뽑아내기
 void downWord(int down, int row);
+
 // 단어 매칭 확인
 bool matchingWord(string word, string inputWord);
 
-char userAnswer[MAX_SIZE][MAX_SIZE];// user 답안
-char inputData[MAX_SIZE][MAX_SIZE];// input 데이터
+char userAnswer[MAX_SIZE][MAX_SIZE];
+// user 답안
+char inputData[MAX_SIZE][MAX_SIZE];
+// input 데이터
 // 사전
 vector<string> dictionary = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
                              "S", "T", "U", "V", "W", "X", "Y", "Z", "RIBS", "RULE", "DRUG", "SERUM", "INDECT",
                              "HOSPITAL", "SURGEON", "ANTIBIOTIC", "SCROLL", "STITCH", "NURSE", "AIDS"};
-// 해쉬 체인에 필요한 vector
-vector<Node *> vec(26);
+// 단어마다 시작 주소를 가지고 있음
+vector<Word *> vec(26);
+
 // 입력 파일들
 // 매개변수로 넘겨주기 귀찮음
 ifstream input("checker.txt");
@@ -80,34 +69,30 @@ int main() {
 
     //freopen("userinput.txt", "r", stdin);
 
-	input >> testCase;
+    input >> testCase;
 
     while (testCase--) {
         int row, col, across, down;
 
-		memset(userAnswer, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
-		memset(inputData, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
-		
-		// 해쉬 체인 초기화
-        for (int i = 0; i < 26; i++)
-            vec[i] = new Node;
+        memset(userAnswer, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
+        memset(inputData, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
 
-		// 사전을 해쉬
+        sort(dictionary.begin(), dictionary.end(), less<string>());
+
+        for (int i = 0; i < 26; i++)
+            vec[i] = new Word;
+
         for (size_t i = 0; i < dictionary.size(); i++) {
             int ascii = dictionary[i][0] - 65;
-            Node *node = new Node(dictionary[i]);
-
-            vec[ascii]->setNextNode(node);
+            vec[ascii]->addWord(dictionary[i]);
         }
 
-		// 디버깅용
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++)
             vec[i]->printData();
-        }
 
-		input >> row >> col;
-		dataInput(row, col);
-		input >> across >> down;
+        input >> row >> col;
+        dataInput(row, col);
+        input >> across >> down;
 
         acrossWord(across, col);
         cout << "-------------------------" << endl;
@@ -116,40 +101,41 @@ int main() {
 }
 
 void dataInput(int row, int col) {
-	// input 파일 데이터
-	for (int x = 0; x < row; x++) {
-		for (int y = 0; y < col; y++)
-			input >> inputData[x][y];
-	}
-	// user 답안 데이터
-	for (int x = 0; x < row; x++) {
-		for (int y = 0; y < col; y++)
-			answer >> userAnswer[x][y];
-	}
+    // input 파일 데이터
+    for (int x = 0; x < row; x++) {
+        for (int y = 0; y < col; y++)
+            input >> inputData[x][y];
+    }
+    // user 답안 데이터
+    for (int x = 0; x < row; x++) {
+        for (int y = 0; y < col; y++)
+            answer >> userAnswer[x][y];
+    }
 }
+
 // 가로 단어
 void acrossWord(int across, int col) {
     for (int x = 0; x < across; x++) {
         int i, j;
         string str = "", temp = "";
-		input >> i >> j;
+        input >> i >> j;
 
-		// user 답안의 단어를 뽑아옴
-		// input 파일의 단어도 뽑아옴
-		// 단어가 제대로 매칭되는지 확인하기 위함
+        // user 답안의 단어를 뽑아옴
+        // input 파일의 단어도 뽑아옴
+        // 단어가 제대로 매칭되는지 확인하기 위함
         for (int index = 0; ; index++) {
             if (j - 1 + index < col) {
-				if (userAnswer[i - 1][j - 1 + index] != '*') {
-					str += userAnswer[i - 1][j - 1 + index];
-					temp += inputData[i - 1][j - 1 + index];
-				}
+                if (userAnswer[i - 1][j - 1 + index] != '*') {
+                    str += userAnswer[i - 1][j - 1 + index];
+                    temp += inputData[i - 1][j - 1 + index];
+                }
                 else
                     break;
             }
             else
                 break;
         }
-		// 매칭 TRUE 매칭 안됨 FALSE
+        // 매칭 TRUE 매칭 안됨 FALSE
         if (matchingWord(str, temp))
             cout << "TRUE" << endl;
         else
@@ -158,29 +144,30 @@ void acrossWord(int across, int col) {
         //cout << str << endl;
     }
 }
+
 // 세로 단어
 void downWord(int down, int row) {
     for (int x = 0; x < down; x++) {
         int i, j;
         string str = "", temp = "";
-		input >> i >> j;
+        input >> i >> j;
 
-		// user 답안의 단어를 뽑아옴
-		// input 파일의 단어도 뽑아옴
-		// 단어가 제대로 매칭되는지 확인하기 위함
+        // user 답안의 단어를 뽑아옴
+        // input 파일의 단어도 뽑아옴
+        // 단어가 제대로 매칭되는지 확인하기 위함
         for (int index = 0; ; index++) {
             if (i - 1 + index < row) {
-				if (userAnswer[i - 1 + index][j - 1] != '*') {
-					str += userAnswer[i - 1 + index][j - 1];
-					temp += inputData[i - 1 + index][j - 1];
-				}
+                if (userAnswer[i - 1 + index][j - 1] != '*') {
+                    str += userAnswer[i - 1 + index][j - 1];
+                    temp += inputData[i - 1 + index][j - 1];
+                }
                 else
                     break;
             }
             else
                 break;
         }
-		// 매칭 TRUE 매칭 안됨 FALSE
+        // 매칭 TRUE 매칭 안됨 FALSE
         if (matchingWord(str, temp))
             cout << "TRUE" << endl;
         else
@@ -189,35 +176,32 @@ void downWord(int down, int row) {
         //cout << str << endl;
     }
 }
+
 // 단어 매칭 확인
 bool matchingWord(string word, string inputWord) {
-	size_t index = 0;
-    Node *cur = vec[word[0] - 65]->getNode();
-	string s;
+    vector<string> arr = vec[word[0] - 65]->getWordVector();
+    size_t start = 0, end = arr.size();
 
-    while (cur != NULL) {
-		// 글자 수 맞춰줌
-		while (cur->getData().size() != inputWord.size()) {
-			if (cur->getNode() == NULL)
-				return false;
-			cur = cur->getNode();
-		}
-		// s = 사전 데이터
-		s = cur->getData();
-		// 일단 input과 비교해서 단어를 제대로 사용했는지 확인
-        for (index = 0; index < word.size(); index++) {
-			if (inputWord[index] == '_')
-                continue;
-			else if (inputWord[index] != s[index]) {
-                break;
-            }
+    // 단어가 제대로 사용됐는지 확인
+    for (size_t index = 0; index < word.size(); index++) {
+        if (inputWord[index] == '_')
+            continue;
+        else if (inputWord[index] != word[index])
+            return false;
+    }
+
+    // 이진탐색으로 사전에 단어가 있는지 검색
+    while (start <= end) {
+        size_t mid = (start + end) / 2;
+
+        if (arr[mid] == word)
+            return true;
+        else {
+            if (arr[mid] < word)
+                start = mid + 1;
+            else if (arr[mid] > word)
+                end = mid - 1;
         }
-        // 단어를 제대로 사용했으면 user가 입력한 값과 사전 데이터를 비교
-		// 둘다 맞으면 true 반환 아니면 로직을 반복
-		if (word.compare(s) == 0 && index == word.size())
-			return true;
-
-        cur = cur->getNode();
     }
     return false;
 }

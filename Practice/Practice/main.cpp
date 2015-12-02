@@ -3,10 +3,18 @@
 //
 
 #include <iostream>
+#include <vector>
+
 using namespace std;
 
-int main() {
-    int a = 'A' - 12;
+vector<int **> a;
+int b[] = {1, 2, 3, 4, 5};
+string aWord[] = {"A", "ADIS"};
 
-    cout << a << endl;
+int main() {
+    a[0] = new b;
+
+    for (int i = 0; i < 5; i++)
+        cout << a[0][i] << " ";
+    cout << endl;
 }
