@@ -25,12 +25,6 @@ public:
         this->s.push_back(s);
     }
 
-    void printData() const {
-        for (size_t i = 0; i < s.size(); i++)
-            cout << s[i] << " ";
-        cout << endl;
-    }
-
     vector<string> getWordVector() {
         return s;
     }
@@ -52,52 +46,62 @@ char userAnswer[MAX_SIZE][MAX_SIZE];
 // user 답안
 char inputData[MAX_SIZE][MAX_SIZE];
 // input 데이터
-// 사전
-vector<string> dictionary = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
-                             "S", "T", "U", "V", "W", "X", "Y", "Z", "RIBS", "RULE", "DRUG", "SERUM", "INDECT",
-                             "HOSPITAL", "SURGEON", "ANTIBIOTIC", "SCROLL", "STITCH", "NURSE", "AIDS"};
 // 단어마다 시작 주소를 가지고 있음
 vector<Word *> vec(26);
 
-// 입력 파일들
 // 매개변수로 넘겨주기 귀찮음
-ifstream input("checker.txt");
-ifstream answer("userinput.txt");
+// input 파일
+ifstream input("input.txt");
+// user 답안
+ifstream answer("output.txt");
+// 테스트 케이스, 틀린 갯수, 전체 단어 갯수, 틀린 테스트 케이스
+int t, wrongCnt = 0, wordCnt = 0, wrongTestCase = 0;
+// 접답 비율 계산
+double rate = 0;
+bool flag1 = true;
 
 int main() {
-    int testCase;
+    int testCase, totalWordCnt = 0;
 
-    //freopen("userinput.txt", "r", stdin);
+    input >> totalWordCnt;
+
+    for (int i = 0; i < 26; i++)
+        vec[i] = new Word;
+
+    for (size_t i = 0; i < totalWordCnt - 2; i++) {
+        string temp;
+        input >> temp;
+        int ascii = temp[0] - 65;
+        vec[ascii]->addWord(temp);
+    }
 
     input >> testCase;
 
-    while (testCase--) {
+    for (t = 0; t < testCase; t++) {
         int row, col, across, down;
 
         memset(userAnswer, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
         memset(inputData, 0, sizeof(char) * MAX_SIZE * MAX_SIZE);
 
-        sort(dictionary.begin(), dictionary.end(), less<string>());
-
-        for (int i = 0; i < 26; i++)
-            vec[i] = new Word;
-
-        for (size_t i = 0; i < dictionary.size(); i++) {
-            int ascii = dictionary[i][0] - 65;
-            vec[ascii]->addWord(dictionary[i]);
-        }
-
-        for (int i = 0; i < 26; i++)
-            vec[i]->printData();
-
         input >> row >> col;
         dataInput(row, col);
         input >> across >> down;
+        wordCnt += across + down;
 
         acrossWord(across, col);
-        cout << "-------------------------" << endl;
         downWord(down, row);
+
+        if (!flag1) {
+            wrongCnt++;
+            flag1 = true;
+        }
     }
+
+    rate = ((double) wrongCnt / (double) testCase) * 100;
+    cout << 100 - (int) rate << " " << wrongTestCase << endl;
+
+    input.close();
+    answer.close();
 }
 
 void dataInput(int row, int col) {
@@ -117,6 +121,7 @@ void dataInput(int row, int col) {
 void acrossWord(int across, int col) {
     for (int x = 0; x < across; x++) {
         int i, j;
+        bool flag = true;
         string str = "", temp = "";
         input >> i >> j;
 
@@ -126,6 +131,12 @@ void acrossWord(int across, int col) {
         for (int index = 0; ; index++) {
             if (j - 1 + index < col) {
                 if (userAnswer[i - 1][j - 1 + index] != '*') {
+                    if (!(userAnswer[i - 1][j - 1 + index] >= 'A' && userAnswer[i - 1][j - 1 + index] <= 'Z')) {
+                        wrongCnt++;
+                        wrongTestCase = t + 1;
+                        flag = false;
+                        break;
+                    }
                     str += userAnswer[i - 1][j - 1 + index];
                     temp += inputData[i - 1][j - 1 + index];
                 }
@@ -135,13 +146,10 @@ void acrossWord(int across, int col) {
             else
                 break;
         }
-        // 매칭 TRUE 매칭 안됨 FALSE
-        if (matchingWord(str, temp))
-            cout << "TRUE" << endl;
-        else
-            cout << "FALSE" << endl;
-
-        //cout << str << endl;
+        if (flag && !matchingWord(str, temp)) {
+            flag1 = false;
+            wrongTestCase = t + 1;
+        }
     }
 }
 
@@ -149,6 +157,7 @@ void acrossWord(int across, int col) {
 void downWord(int down, int row) {
     for (int x = 0; x < down; x++) {
         int i, j;
+        bool flag = true;
         string str = "", temp = "";
         input >> i >> j;
 
@@ -158,6 +167,12 @@ void downWord(int down, int row) {
         for (int index = 0; ; index++) {
             if (i - 1 + index < row) {
                 if (userAnswer[i - 1 + index][j - 1] != '*') {
+                    if (!(userAnswer[i - 1 + index][j - 1] >= 'A' && userAnswer[i - 1 + index][j - 1] <= 'Z')) {
+                        wrongCnt++;
+                        wrongTestCase = t + 1;
+                        flag = false;
+                        break;
+                    }
                     str += userAnswer[i - 1 + index][j - 1];
                     temp += inputData[i - 1 + index][j - 1];
                 }
@@ -167,28 +182,28 @@ void downWord(int down, int row) {
             else
                 break;
         }
-        // 매칭 TRUE 매칭 안됨 FALSE
-        if (matchingWord(str, temp))
-            cout << "TRUE" << endl;
-        else
-            cout << "FALSE" << endl;
-
-        //cout << str << endl;
+        if (flag && !matchingWord(str, temp)) {
+            flag1 = false;
+            wrongTestCase = t + 1;
+        }
     }
 }
 
 // 단어 매칭 확인
 bool matchingWord(string word, string inputWord) {
     vector<string> arr = vec[word[0] - 65]->getWordVector();
-    size_t start = 0, end = arr.size() - 1;
+    size_t start = 0, end = arr.size() - 1, index;
 
     // 단어가 제대로 사용됐는지 확인
-    for (size_t index = 0; index < word.size(); index++) {
+    for (index = 0; index < inputWord.size(); index++) {
         if (inputWord[index] == '_')
             continue;
         else if (inputWord[index] != word[index])
             return false;
     }
+
+    if (index != inputWord.size())
+        return false;
 
     // 이진탐색으로 사전에 단어가 있는지 검색
     while (start <= end) {
