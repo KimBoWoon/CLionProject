@@ -40,11 +40,11 @@ int main() {
         }
         cout << mergeMatrix[1][size] << endl;
 
-//        for (int x = 0; x <= size; x++) {
-//            for (int y = 0; y <= size; y++)
-//                cout << mergeMatrix[x][y] << " ";
-//            cout << endl;
-//        }
+        for (int x = 0; x <= size; x++) {
+            for (int y = 0; y <= size; y++)
+                cout << mergeMatrix[x][y] << " ";
+            cout << endl;
+        }
     }
     return 0;
 }
