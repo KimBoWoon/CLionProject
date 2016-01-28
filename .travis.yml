@@ -1,0 +1,20 @@
+language:
+    - c
+    - cpp
+
+compiler:
+    - gcc
+    - g++
+
+script: 
+    - g++ ./CardGame/main.cpp
+    - g++ ./CrossWord/CrossWordMain.cpp ./CrossWord/Word.cpp ./CrossWord/Include.h ./CrossWord/Word.h
+    - g++ ./MergingFiles/main.cpp
+    - g++ ./monoton/main.cpp
+    - gcc ./Practice/BellmanFordAlgorithm.c
+    ./Practice/DijkstrasAlgorithm.c
+    ./Practice/KruskalsAlgorithm.c
+    ./Practice/PrimsAlgorithm.c
+    - g++ ./Practice/ChainedMatrixMultiplication.cpp
+    ./Practice/RunLengthEncoding.cpp
+    - g++ ./Pythagorean/main.cpp
