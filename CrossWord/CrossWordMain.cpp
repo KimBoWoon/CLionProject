@@ -1,4 +1,6 @@
 #include "Word.h"
+#include <cstdio>
+#include <cstdlib>
 
 vector<string> dictionary;
 Word *head;
