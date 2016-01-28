@@ -11,6 +11,10 @@ script:
     - g++ ./CrossWord/CrossWordMain.cpp ./CrossWord/Word.cpp ./CrossWord/Include.h ./CrossWord/Word.h
     - g++ ./MergingFiles/main.cpp
     - g++ ./monoton/main.cpp
-    - gcc ./Practice/Practice/BellmanFordAlgorithm.c ./Practice/Practice/DijkstrasAlgorithm.c ./Practice/Practice/KruskalsAlgorithm.c ./Practice/Practice/PrimsAlgorithm.c
-    - g++ ./Practice/Practice/ChainedMatrixMultiplication.cpp ./Practice/Practice/RunLengthEncoding.cpp
+    - gcc ./Practice/Practice/BellmanFordAlgorithm.c
+    - gcc ./Practice/Practice/DijkstrasAlgorithm.c
+    - gcc ./Practice/Practice/KruskalsAlgorithm.c
+    - gcc ./Practice/Practice/PrimsAlgorithm.c
+    - g++ ./Practice/Practice/ChainedMatrixMultiplication.cpp
+    - g++ ./Practice/Practice/RunLengthEncoding.cpp
     - g++ ./Pythagorean/main.cpp
